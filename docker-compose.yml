@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    environment:
+        POSTGRES_DB: mydbname
+        POSTGRES_USER: mydbuser
+        POSTGRES_PASSWORD: mydbpwd
+    ports:
+      - "5432:5432"
+  
+  migrate-up:
+    image: migrate/migrate
+    volumes:
+      - ./postgres/migrations:/migrations
+    depends_on:
+      - db
+    command: -source=file://migrations -database postgres://mydbuser:mydbpwd@db:5432/mydbname?sslmode=disable up
+
+  # migrate-down:
+  #     image: migrate/migrate
+  #     volumes:
+  #       - ./postgres/migrations:postgres/migrations
+  #     depends_on:
+  #       - db
+  #     command: -source=file://postgres/migrations -database postgres://mydbuser:mydbpwd@db:5432/mydbname?sslmode=disable down -all
+      
+    
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      - db
+

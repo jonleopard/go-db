@@ -1,0 +1,6 @@
+CREATE TABLE todos (
+  id SERIAL PRIMARY KEY,
+  user_id SERIAL NOT NULL REFERENCES users(id),
+  task TEXT NOT NULL,
+  done BOOLEAN NOT NULL
+);
