@@ -2,17 +2,41 @@
 
 package postgres
 
-import ()
+import (
+	"github.com/google/uuid"
+)
+
+type Comment struct {
+	ID      uuid.UUID `json:"id"`
+	PostID  uuid.UUID `json:"post_id"`
+	Content string    `json:"content"`
+	Votes   int32     `json:"votes"`
+}
+
+type Post struct {
+	ID       uuid.UUID `json:"id"`
+	ThreadID uuid.UUID `json:"thread_id"`
+	Title    string    `json:"title"`
+	Content  string    `json:"content"`
+	Votes    int32     `json:"votes"`
+}
+
+type Thread struct {
+	ID          uuid.UUID `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+}
 
 type Todo struct {
-	ID     int32  `json:"id"`
-	UserID int32  `json:"user_id"`
-	Task   string `json:"task"`
-	Done   bool   `json:"done"`
+	ID     uuid.UUID `json:"id"`
+	UserID uuid.UUID `json:"user_id"`
+	Task   string    `json:"task"`
+	Done   bool      `json:"done"`
 }
 
 type User struct {
-	ID        int32  `json:"id"`
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
+	ID        uuid.UUID `json:"id"`
+	Firstname string    `json:"firstname"`
+	Lastname  string    `json:"lastname"`
+	Email     string    `json:"email"`
 }

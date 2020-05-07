@@ -1,6 +1,7 @@
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
+  id UUID PRIMARY KEY,
   firstname TEXT NOT NULL,
-  lastname TEXT NOT NULL
+  lastname TEXT NOT NULL,
+  email TEXT NOT NULL
 );
 
