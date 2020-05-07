@@ -4,9 +4,7 @@ services:
   db:
     image: postgres
     environment:
-        POSTGRES_DB: mydbname
-        POSTGRES_USER: mydbuser
-        POSTGRES_PASSWORD: mydbpwd
+      POSTGRES_PASSWORD: example
     ports:
       - "5432:5432"
 
@@ -24,7 +22,7 @@ services:
       - ./postgres/migrations:/migrations
     depends_on:
       - db
-    command: -source=file://migrations -database postgres://mydbuser:mydbpwd@db:5432/mydbname?sslmode=disable up
+    command: -source=file://migrations -database postgres://postgres:example@db:5432/postgres?sslmode=disable up
 
   # migrate-down:
   #     image: migrate/migrate
