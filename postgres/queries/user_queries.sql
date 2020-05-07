@@ -10,5 +10,5 @@ DELETE FROM users
 WHERE id = $1;
 
 -- name: CreateUser :one
-INSERT INTO users (firstname, lastname)
-VALUES ($1, $2) RETURNING *;
+INSERT INTO users (id, email, password, firstname, lastname)
+VALUES ($1, $2, $3, $4, $5) RETURNING *;
