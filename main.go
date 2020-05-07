@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/jonleopard/sqlc/postgres"
+	"github.com/jonleopard/go-db/postgres"
 	_ "github.com/lib/pq"
 )
 

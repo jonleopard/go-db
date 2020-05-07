@@ -1,7 +1,7 @@
 version: "1"
 packages:
   - name: "postgres"
-    path: "."
+    path: "/internal/db"
     emit_json_tags: true
     schema: "./migrations"
     queries: "./queries"

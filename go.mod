@@ -1,4 +1,4 @@
-module github.com/jonleopard/sqlc
+module github.com/jonleopard/go-db
 
 go 1.14
 
