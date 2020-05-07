@@ -1,0 +1,7 @@
+CREATE TABLE posts (
+  id UUID PRIMARY KEY,
+  thread_id UUID NOT NULL REFERENCES threads (id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  votes INT NOT NULL
+)
