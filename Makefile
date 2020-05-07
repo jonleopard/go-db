@@ -12,3 +12,5 @@ migrate:
 migrate-down:
 	docker run -v ${PWD}/postgres/migrations:/migrations --network host migrate/migrate -source file:///migrations -database "postgresql://mydbuser:mydbpwd@localhost/mydbname?sslmode=disable" down -all
 
+sqlc:
+	docker run --rm -v ${PWD}/postgres:/src -w /src kjconroy/sqlc generate

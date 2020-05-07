@@ -9,6 +9,14 @@ services:
         POSTGRES_PASSWORD: mydbpwd
     ports:
       - "5432:5432"
+
+  sqlc:
+    image: kjconroy/sqlc
+    volumes:
+      - ./postgres:/src
+    command: generate /src
+    depends_on:
+      - db
   
   migrate-up:
     image: migrate/migrate
@@ -25,8 +33,7 @@ services:
   #     depends_on:
   #       - db
   #     command: -source=file://postgres/migrations -database postgres://mydbuser:mydbpwd@db:5432/mydbname?sslmode=disable down -all
-      
-    
+          
   adminer:
     image: adminer
     restart: always
@@ -36,4 +43,3 @@ services:
       ADMINER_DEFAULT_SERVER: db
     depends_on:
       - db
-
