@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"fmt"
@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/jwtauth"
+	"github.com/jonleopard/go-db/postgres"
 )
 
 var tokenAuth *jwtauth.JWTAuth
@@ -23,12 +24,19 @@ func init() {
 	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
 }
 
-func router() http.Handler {
-	r := chi.NewRouter()
+type Handler struct {
+	*chi.Mux
+}
+
+func NewHandler() *Handler {
+	h := &Handler{
+		Mux: chi.NewMux(),
+		db:  postgres.New(conn),
+	}
 
 	// Basic CORS
 	// for more ideas, see: https://developer.github.com/v3/#cross-origin-resource-sharing
-	r.Use(cors.Handler(cors.Options{
+	h.Use(cors.Handler(cors.Options{
 		// AllowedOrigins: []string{"https://foo.com"}, // Use this to allow specific origin hosts
 		AllowedOrigins: []string{"*"},
 		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
@@ -40,15 +48,15 @@ func router() http.Handler {
 	}))
 
 	// A good base middleware stack
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	h.Use(middleware.RequestID)
+	h.Use(middleware.RealIP)
+	h.Use(middleware.Logger)
+	h.Use(middleware.Recoverer)
 
-	r.Use(middleware.Timeout(60 * time.Second))
+	h.Use(middleware.Timeout(60 * time.Second))
 
 	// Protected routes
-	r.Group(func(r chi.Router) {
+	h.Group(func(r chi.Router) {
 		// Seek, verify and validate JWT tokens
 		r.Use(jwtauth.Verifier(tokenAuth))
 
@@ -65,18 +73,28 @@ func router() http.Handler {
 	})
 
 	// Public routes
-	r.Group(func(r chi.Router) {
+	h.Group(func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("welcome anonymous"))
 		})
+
+		r.Get("/hello", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("hello world"))
+		})
 	})
 
-	return r
+	return h
 
 }
 
-func main() {
-	port := ":3333"
-	fmt.Printf("Starting server on port %v\n", port)
-	http.ListenAndServe(port, router())
+func (h *Handler) UsersList() http.HandlerFunc {
+	type data struct {
+		Users []db.GetUsers
+	}
 }
+
+// func main() {
+// 	port := ":3333"
+// 	fmt.Printf("Starting server on port %v\n", port)
+// 	http.ListenAndServe(port, router())
+// }
