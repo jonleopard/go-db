@@ -22,6 +22,7 @@ func init() {
 	// a sample jwt token with claims `user_id:123` here:
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 123})
 	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+
 }
 
 type Handler struct {
@@ -85,12 +86,6 @@ func NewHandler() *Handler {
 
 	return h
 
-}
-
-func (h *Handler) UsersList() http.HandlerFunc {
-	type data struct {
-		Users []db.GetUsers
-	}
 }
 
 // func main() {

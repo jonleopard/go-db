@@ -1,7 +1,4 @@
-package main
+package auth
 
-import "fmt"
-
-func main() {
-	fmt.Println("vim-go")
-}
+// Pull in generated models.go here
+// We should also validate inputs.
