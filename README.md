@@ -17,4 +17,5 @@ adminer is available on localhost:8081. Credentials located in makefile/docker-c
    but I think it would be cleaner to separate into separate files.
 3. Figure out if I need a store.go file inside the postgres directory for using
    inside web package. The main idea is that we need to establish a DB
-   connection for CRUD actions. 
+   connection for CRUD actions. Currently, this is all being done
+   inside `cmd/go-db/main.go`
