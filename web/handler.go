@@ -27,12 +27,15 @@ func init() {
 
 type Handler struct {
 	*chi.Mux
+
+	db *postgres.Queries
 }
 
-func NewHandler() *Handler {
+func NewHandler(db *postgres.Queries) *Handler {
 	h := &Handler{
 		Mux: chi.NewMux(),
-		db:  postgres.New(conn),
+
+		db: db,
 	}
 
 	// Basic CORS
@@ -79,17 +82,8 @@ func NewHandler() *Handler {
 			w.Write([]byte("welcome anonymous"))
 		})
 
-		r.Get("/hello", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("hello world"))
-		})
 	})
 
 	return h
 
 }
-
-// func main() {
-// 	port := ":3333"
-// 	fmt.Printf("Starting server on port %v\n", port)
-// 	http.ListenAndServe(port, router())
-// }
